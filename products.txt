@@ -1,0 +1,2 @@
+"{\"name\": \"Eidi\", \"category\": {\"name\": \"Bracelet\"}, \"color\": \"red\", \"weight\": 4}"
+"{\"name\": \"Xiaomi\", \"category\": {\"name\": \"Brand\"}}"
