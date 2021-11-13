@@ -32,7 +32,7 @@ and I applied them in order to see if it works. And yes, they work.
 
 If there are any questions regarding this project, please don't hesitate to contact me through email.
 Have a great day!
-Darian
+Darian :)
 """
 
 def function(main_select):
