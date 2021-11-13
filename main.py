@@ -1,6 +1,10 @@
+import order
+import product
+from orders import Orders
+
 from category import Category
 from categories import Categories
-from product import Product
+from product import Product, Necklace, Bracelet, Earring
 from products import Products
 from json import JSONDecodeError
 
@@ -10,29 +14,87 @@ from json import JSONDecodeError
 # instruction using a dictionary, or just using multiple 'if' branches
 # which is, obviously, much uglier
 def function(main_select):
-    second_menu = {1: "Add a", 2: "Remove a", 3: "Display all"}
-    return '\n'.join(f"{k}: {v} {main_select}" for k, v in second_menu.items())
+    if main_select == "Category" or main_select == "Product":
+        second_menu = {1: "Add a", 2: "Remove a", 3: "Display all"}
+        return '\n'.join(f"{k}: {v} {main_select}" for k, v in second_menu.items())
+    else:
+        second_menu = {1: "Add a", 3: "Display all"}
+        return '\n'.join(f"{k}: {v} {main_select}" for k, v in second_menu.items())
+
 
 def add_category(text):
-    print(f"Please name the {text}: ")
-    text2 = input()
-    if text == "Category":
-        Categories.add_category(text2)
-    elif text == "Product":
-        Products.add_product(text2)
-
-#TODO: think about orders class, serialization on txt, set price, materials and others for category, product and order
+    if text == "Order":
+        ordering = dict()
+        display_categories("Product")
+        print("\n Exit")
+        choice = input("Select your choice:")
+        if choice == "Exit":
+            return
+        quantity = int(input("Select the quantity:"))
+        if choice not in ordering:
+            ordering[choice] = quantity
+        else:
+            ordering[choice] = order[choice] + quantity
+        while choice != "Exit:":
+            if choice == "Exit":
+                return
+            more = int(input("Do you want more items?\n 1. Yes\n 2. No\nYour choise: "))
+            if more == 1:
+                pass
+            elif more == 2:
+                break
+            else:
+                pass
+            display_categories("Product")
+            choice = input("Select your choice:")
+            quantity = int(input("Select the quantity:"))
+            if choice not in ordering:
+                ordering[choice] = quantity
+            else:
+                ordering[choice] = order[choice] + quantity
+        address = input("Enter your address:")
+        item = order.Order(ordering, address)
+        item.write_to_file(ordering, address)
+    else:
+        print(f"Please name the {text}: ")
+        text2 = input()
+        if text == "Category":
+            Categories.add_category(Category(text2))
+        elif text == "Product":
+            list_products = {"Product": Product, "Necklace": Necklace, "Bracelets": Bracelet, "Earring": Earring}
+            display_categories("Category")
+            category_list = Categories.categories
+            text3 = input("Please enter a category: ")
+            while Category(text3) not in category_list:
+                text3 = input("Please enter a valid(!) category: ")
+            item = list_products.get(text3, Product)
+            item.write_to_file(text2)
+        elif text == "Order":
+            pass
 
 
 def delete_category(text):
+    display_categories(text)
     print(f"Please refer to the name of the {text}: ")
     text2 = input()
-    Categories.remove_category(text2)
+    if text == "Category":
+        Categories.remove_category(Category(text2))
+    elif text == "Product":
+        Products.remove_product(Product(text2, Category("Text")))
 
 
 def display_categories(text):
-    for i in Categories.load_categories():
-        print(i.name)
+    print("-" * 20)
+    if text == "Category":
+        for i in Categories.categories:
+            print("Category name: " + i.name)
+    elif text == "Product":
+        for i in Products.products:
+            print("Product name: " + i.name)
+    elif text == "Order":
+        for i in Orders.orders:
+            print("Order number: " + str(i.id))
+    print("-" * 20)
 
 
 def error_handler():
@@ -44,6 +106,9 @@ def Exit():
 
 
 if __name__ == "__main__":
+    Categories.load_categories()
+    Products.load_products()
+    Orders.load_orders()
     menus = {1: add_category, 2: delete_category, 3: display_categories, 4: Exit.__name__}
     main_menu = {1: "Category", 2: "Product", 3: "Order", 4: Exit.__name__}
     while (True):
@@ -73,7 +138,7 @@ if __name__ == "__main__":
     cat_1 = Category("Necklaces")
     cat_2 = Category("Bracelets")
     cat_3 = Category("Earrings")
-    prod_1 = Product("Keas Kalvin Kelin")
+    prod_1 = Product("Keas Kalvin Kelin", cat_1)
 
     # add them inside the Categories collection, and also save them
     # on the disk
@@ -81,17 +146,15 @@ if __name__ == "__main__":
     Categories.add_category(cat_2)
     Categories.add_category(cat_3)
 
-    # display the existing categories
-    try:
-        categories = Categories.load_categories()
-        for cat in categories:
-            print(cat.name)
-    except JSONDecodeError as e:
-        categories = None
-
-    # remove one category from the Categories collection
-    Categories.remove_category(cat_3)
-
-    # display again the existing categories
-    for cat in categories:
-        print(cat.name)
+    # # display the existing categories
+    # try:
+    #     categories = Categories.load_categories()
+    #     for cat in categories:
+    #         print(cat.name)
+    # except JSONDecodeError as e:
+    #     categories = None
+    # # remove one category from the Categories collection
+    # Categories.remove_category(cat_3)
+    # # display again the existing categories
+    # for cat in categories:
+    #     print(cat.name)

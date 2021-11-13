@@ -51,7 +51,6 @@ class Categories:
             we remove it from the class variable 'categories'. Then, in a second step
             we iterate that collection and we serialize element by element
         """
-        cls.load_categories()
         if cat in cls.categories:
             cls.categories.remove(cat)
             with open("categories.txt", 'w') as f:
@@ -67,7 +66,6 @@ class Categories:
             new category on the disk too, so we have to call teh Encoder class to
             transform teh Python object in a JSON representation
         """
-        cls.load_categories()
         if cat not in cls.categories:
             with open("categories.txt", 'a') as f:
                 e = Encoder()
