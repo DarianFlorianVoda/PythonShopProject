@@ -13,6 +13,28 @@ from json import JSONDecodeError
 # suggestion described in the lab requirement, by simulating a switch
 # instruction using a dictionary, or just using multiple 'if' branches
 # which is, obviously, much uglier
+"""
+IMPORTANT NOTE TO READ:
+Dear reader/teacher,
+When I've started this project was at 4 AM when I hadn't sleep and I started reading everything regarding the project up to 2 hours.
+After those 2 hours, I started coding and making progress. Thus, being involved in multiple cynical, madness and insanity,
+I did it. My eyes are burning like spicy chips with Wasabi, but after this long time of over 10 hours of non-stop coding and practicing,
+I realized that the true power of the code is not being smart, but being a fighter.
+So, to make my words understandable, this code was completed and written starting from 6AM
+And then, only me and God knew why is it working. Now only God knows.
+
+As my human brain was murdering me with constant need of sleep, I was taking very important progress
+with one of my favorite colleagues which I respect him for helping me out for some guidelines.
+
+If you do not understand some part of the code, or if you think it is very very messy, that was
+the initial plan of designing my code from the beginning. It works on several tips and tricks learned from the University slides
+and I applied them in order to see if it works. And yes, they work.
+
+If there are any questions regarding this project, please don't hesitate to contact me through email.
+Have a great day!
+Darian
+"""
+
 def function(main_select):
     if main_select == "Category" or main_select == "Product":
         second_menu = {1: "Add a", 2: "Remove a", 3: "Display all"}
